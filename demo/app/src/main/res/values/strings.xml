@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AutoApk</string>
+    <string name="main_channel">来自%s渠道</string>
+    <string name="main_no_channel">未获取到渠道</string>
+</resources>
