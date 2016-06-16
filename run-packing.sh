@@ -1,9 +1,9 @@
 #!/bin/bash
 
-stime=`date +%s`
 project_path="demo"
 output_dir="apk-home/"
 archive_dir="archive/"
+stime=`date +%s`
 
 if [ ! -x "$output_dir" ]; then  
 mkdir "$output_dir"  
@@ -33,23 +33,20 @@ prg_path=$(cd `dirname "$prg"`; pwd)
 # 2. build single apk
 cd $project_path
 gradle clean assembleRelease
-# gradle clean assembleDebug
 
 
 # 3. build mutil-channel apk
 cd $prg_path
 rm -rf "${output_dir}*"
-apk_path=`find ${project_path}/app/build/outputs/apk/app-release.apk`
-# apk_path=`find ${project_path}/app/build/outputs/apk/app-debug.apk`
-# apk_path=`find ${project_path}/app/build/outputs/apk/coolfood-v*.apk`
+apk_path="${project_path}/app/build/outputs/apk/app-release.apk"
 python generate-channel-apk.py $apk_path $output_dir
-echo ">>> build mutil-channel apk SUCCESS"
+echo ">>> build mutil-channel apk complete"
 
 
 # 4. backup mapping info
 mapping_path="${project_path}/app/build/outputs/mapping"
 cp -a $mapping_path $output_dir
-echo ">>> backup mapping info SUCCESS"
+echo ">>> backup mapping info complete"
 
 
 # 5. add archive
@@ -57,9 +54,9 @@ file_name=`date "+%y%m%d%H%M%S"`.zip
 archive_file="${archive_dir}${file_name}"
 src_dir="apk-home/"
 zip -rq $archive_file $src_dir
-echo ">>> add archive SUCCESS: ${file_name}"
+echo ">>> add archive complete: ${file_name}"
 
 
 etime=`date +%s`
 echo ">>> Bingo :)"
-echo "It fucking took me " $[$etime-$stime]"s."
+echo ">>> It fucking took me" $[$etime-$stime]"s."
